@@ -26,6 +26,11 @@ func NewJson(body []byte) (*Json, error) {
 	return j, nil
 }
 
+// Check whether its data is nil
+func (j *Json) CheckNull() bool {
+  return j.data == nil
+}
+
 // Encode returns its marshaled data as `[]byte`
 func (j *Json) Encode() ([]byte, error) {
 	return j.MarshalJSON()
