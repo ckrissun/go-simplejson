@@ -26,6 +26,26 @@ func NewJson(body []byte) (*Json, error) {
 	return j, nil
 }
 
+// Set Data of Json
+func (j *Json) SetData(v interface{}) *Json {
+  j.data = v
+  return j
+}
+
+// Get Data of Json
+func (j *Json) GetData() interface{} {
+  return j.data
+}
+
+// Convert data of Json to string
+func (j *Json) ToString() (string, error) {
+  b, err := j.MarshalJSON()
+  if err == nil {
+    return string(b), nil
+  }
+  return "", err
+}
+
 // Check whether its data is nil
 func (j *Json) CheckNull() bool {
   return j.data == nil
