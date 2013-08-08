@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"log"
+	"ioutil"
 )
 
 // returns the current implementation version
 func Version() string {
-	return "0.4.2"
+	return "0.4.5"
 }
 
 type Json struct {
@@ -24,6 +25,27 @@ func NewJson(body []byte) (*Json, error) {
 		return nil, err
 	}
 	return j, nil
+}
+
+// NewJsonFromFile return a pointer to a new `Json` object
+// after unmarshalling a json file
+// forked from github.com/polaris1119/autogo/src/simplejson
+func NewJsonFromFile(filename string) (*Json, error) {
+    stream, err := ioutil.ReadFile(filename)
+    if err != nil {
+        return nil, err
+    }
+    content := string(stream)
+    var builder bytes.Buffer
+    lines := strings.Split(content, "\n")
+    for _, line := range lines {
+        line = strings.TrimSpace(line)
+        if line == "" || strings.HasPrefix(line, "#") {
+            continue
+        }
+        builder.WriteString(line)
+    }
+    return NewJson(builder.Bytes())
 }
 
 // Set Data of Json
@@ -47,7 +69,7 @@ func (j *Json) ToString() (string, error) {
 }
 
 // Check whether its data is nil
-func (j *Json) CheckNull() bool {
+func (j *Json) IsNull() bool {
   return j.data == nil
 }
 
