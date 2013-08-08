@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"log"
-	"ioutil"
+	"bytes"
+	"strings"
+	"io/ioutil"
 )
 
 // returns the current implementation version
