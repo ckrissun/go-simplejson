@@ -63,6 +63,10 @@ func (j *Json) GetData() interface{} {
 
 // Convert data of Json to string
 func (j *Json) ToString() (string, error) {
+  if j.IsNull() {
+    return "", errors.New("data is null")
+  }
+
   b, err := j.MarshalJSON()
   if err == nil {
     return string(b), nil
