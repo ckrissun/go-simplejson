@@ -101,6 +101,12 @@ func (j *Json) Set(key string, val interface{}) {
 	if err != nil {
 		return
 	}
+
+  switch val.(type) {
+    case *Json:
+      val = val.(*Json).data
+  }
+
 	m[key] = val
 }
 
