@@ -261,6 +261,23 @@ func (j *Json) StringArray() ([]string, error) {
 	return retArr, nil
 }
 
+// IntArray type asserts to an `array` of `int64`
+func (j *Json) IntArray() ([]int64, error) {
+	arr, err := j.Array()
+	if err != nil {
+		return nil, err
+	}
+	retArr := make([]int64, 0, len(arr))
+	for _, a := range arr {
+		s, ok := a.(float64)
+		if !ok {
+			return nil, err
+		}
+		retArr = append(retArr, int64(s))
+	}
+	return retArr, nil
+}
+
 // MustArray guarantees the return of a `[]interface{}` (with optional default)
 //
 // useful when you want to interate over array values in a succinct manner:
