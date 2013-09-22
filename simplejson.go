@@ -125,6 +125,17 @@ func (j *Json) Get(key string) *Json {
 	return &Json{nil}
 }
 
+// Delete a value for a specified key
+func (j *Json) Delete(key string) *Json {
+  m, err := j.Map()
+  if err == nil {
+    if _, ok := m[key]; ok {
+      delete(m, key)
+    }
+  }
+  return j
+}
+
 // GetPath searches for the item as specified by the branch
 // without the need to deep dive using Get()'s.
 //

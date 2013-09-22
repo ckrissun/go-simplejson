@@ -137,3 +137,12 @@ func TestStdlibInterfaces(t *testing.T) {
 	assert.Equal(t, nil, json.Unmarshal(p, val2))
 	assert.Equal(t, val, val2) // stable
 }
+
+func TestDeleteInterface(t *testing.T) {
+  js, err := NewJson([]byte(`{"name":"myobject","params":{"string":"simplejson"}}`))
+  assert.NotEqual(t, nil, js)
+  assert.Equal(t, nil, err)
+  js.Delete("name")
+  _, ok := js.CheckGet("name")
+  assert.Equal(t, false, ok)
+}
