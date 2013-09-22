@@ -387,6 +387,30 @@ func (j *Json) MustInt(args ...int) int {
 	return def
 }
 
+// MustInt guarantees the return of an `int` (with optional default)
+//
+// useful when you explicitly want an `int` in a single value return context:
+//     myFunc(js.Get("param1").MustInt(), js.Get("optional_param").MustInt(5150))
+func (j *Json) MustInt64(args ...int64) int64 {
+	var def int64
+
+	switch len(args) {
+	case 0:
+		break
+	case 1:
+		def = args[0]
+	default:
+		log.Panicf("MustInt() received too many arguments %d", len(args))
+	}
+
+	i, err := j.Int64()
+	if err == nil {
+		return i
+	}
+
+	return def
+}
+
 // MustFloat64 guarantees the return of a `float64` (with optional default)
 //
 // useful when you explicitly want a `float64` in a single value return context:
