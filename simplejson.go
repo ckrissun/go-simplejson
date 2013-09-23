@@ -257,36 +257,48 @@ func (j *Json) Bytes() ([]byte, error) {
 
 // StringArray type asserts to an `array` of `string`
 func (j *Json) StringArray() ([]string, error) {
-	arr, err := j.Array()
-	if err != nil {
-		return nil, err
-	}
-	retArr := make([]string, 0, len(arr))
-	for _, a := range arr {
-		s, ok := a.(string)
-		if !ok {
-			return nil, err
-		}
-		retArr = append(retArr, s)
-	}
-	return retArr, nil
+	switch arr := j.data.(type) {
+  case []interface{}:
+    retArr := make([]string, 0, len(arr))
+    for _, a := range arr {
+      s, ok := a.(string)
+      if !ok {
+        return nil, errors.New("type assertion to string failed")
+      }
+      retArr = append(retArr, s)
+    }
+    return retArr, nil
+  case []string:
+    retArr := make([]string, 0, len(arr))
+    for _, a := range arr {
+      retArr = append(retArr, a)
+    }
+    return retArr, nil
+  }
+	return nil, errors.New("type assertion to []string failed")
 }
 
 // IntArray type asserts to an `array` of `int64`
 func (j *Json) IntArray() ([]int64, error) {
-	arr, err := j.Array()
-	if err != nil {
-		return nil, err
-	}
-	retArr := make([]int64, 0, len(arr))
-	for _, a := range arr {
-		s, ok := a.(float64)
-		if !ok {
-			return nil, err
-		}
-		retArr = append(retArr, int64(s))
-	}
-	return retArr, nil
+  switch arr := j.data.(type) {
+  case []interface{}:
+    retArr := make([]int64, 0, len(arr))
+    for _, a := range arr {
+      s, ok := a.(float64)
+      if !ok {
+        return nil, errors.New("type assertion to float64 failed")
+      }
+      retArr = append(retArr, int64(s))
+    }
+    return retArr, nil
+  case []int64:
+    retArr := make([]int64, 0, len(arr))
+    for _, a := range arr {
+      retArr = append(retArr, a)
+    }
+    return retArr, nil
+  }
+	return nil, errors.New("type assertion to []int64 failed")
 }
 
 // MustArray guarantees the return of a `[]interface{}` (with optional default)
