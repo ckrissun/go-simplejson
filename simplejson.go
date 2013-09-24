@@ -76,7 +76,15 @@ func (j *Json) ToString() (string, error) {
 
 // Check whether its data is nil
 func (j *Json) IsNull() bool {
-  return j.data == nil
+  if j.data == nil {
+    return true
+  }
+
+  // check whether it has a null map
+  if m, err := j.Map(); err == nil {
+    return len(m) == 0
+  }
+  return false
 }
 
 // Encode returns its marshaled data as `[]byte`
