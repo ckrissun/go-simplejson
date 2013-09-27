@@ -239,20 +239,22 @@ func (j *Json) Float64() (float64, error) {
 
 // Int type asserts to `float64` then converts to `int`
 func (j *Json) Int() (int, error) {
-	if f, ok := (j.data).(float64); ok {
-		return int(f), nil
-	}
+  switch f := (j.data).(type) {
+  case float64, int:
+    return int(f), nil
+  }
 
-	return -1, errors.New("type assertion to float64 failed")
+	return -1, errors.New("type assertion to int failed")
 }
 
 // Int type asserts to `float64` then converts to `int64`
 func (j *Json) Int64() (int64, error) {
-	if f, ok := (j.data).(float64); ok {
-		return int64(f), nil
-	}
+  switch f := (j.data).(type) {
+  case float64, int64:
+    return int64(f), nil
+  }
 
-	return -1, errors.New("type assertion to float64 failed")
+	return -1, errors.New("type assertion to int64 failed")
 }
 
 // Bytes type asserts to `[]byte`
