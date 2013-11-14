@@ -146,3 +146,12 @@ func TestDeleteInterface(t *testing.T) {
   _, ok := js.CheckGet("name")
   assert.Equal(t, false, ok)
 }
+
+func TestCountInterface(t *testing.T) {
+  js, err := NewJson([]byte(`{"name":"myobject","params":{"string":"simplejson"}}`))
+  assert.NotEqual(t, nil, js)
+  assert.Equal(t, nil, err)
+  count, err := js.Count()
+  assert.Equal(t, nil, err)
+  assert.Equal(t, 2, count)
+}
